@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-trajectory_metrics.py — Compute message-count metrics from a mini-SWE-agent-v2 trajectory.
-
 The trajectory JSON is expected to contain a top-level "messages" array where
 every element has at least a "role" field with one of the values:
   system | user | assistant | tool
@@ -20,9 +18,7 @@ from pathlib import Path
 from typing import NamedTuple
 
 
-# ---------------------------------------------------------------------------
 # Data structures
-# ---------------------------------------------------------------------------
 
 class MessageCounts(NamedTuple):
     system: int

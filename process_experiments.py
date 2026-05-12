@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-process_experiments.py
-
 Task 2 aggregation script.
 
 This script processes all downloaded mini-SWE-agent-v2 trajectories by reusing
