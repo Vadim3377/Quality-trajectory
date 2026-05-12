@@ -1,0 +1,9 @@
+# Task 2 Metrics Summary
+
+| Model | Runs | Avg total | Avg system | Avg user | Avg assistant | Avg tool | Min | Max |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| claude-4-5-opus-high | 500 | 72.41 | 1 | 1.0 | 32.89 | 37.51 | 14 | 222 |
+| claude-4-6-opus | 500 | 60.84 | 1 | 1 | 28.93 | 29.91 | 11 | 288 |
+| gemini-3-flash-high | 500 | 113.24 | 1 | 1.01 | 56.11 | 55.12 | 2 | 319 |
+| gpt-5-2-codex | 500 | 72.88 | 1 | 1.01 | 35.04 | 35.84 | 17 | 251 |
+| minimax-2-5-high | 500 | 121.89 | 1 | 1.01 | 60.44 | 59.44 | 23 | 502 |

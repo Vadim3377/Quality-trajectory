@@ -57,27 +57,65 @@ def extract_messages(data: dict) -> list[dict]:
     """
     Return the list of message objects from the trajectory.
 
-    Supports two common layouts produced by mini-SWE-agent-v2:
-      • { "messages": [...] }          — flat layout
-      • { "trajectory": [...] }        — SWE-agent legacy layout;
-                                         each element may contain a "messages" key
+    Supports:
+      - { "messages": [...] }
+      - { "trajectory": [...] }
+      - nested wrapper objects, such as Docent-downloaded runs
     """
-    if "messages" in data and isinstance(data["messages"], list):
-        return data["messages"]
 
-    if "trajectory" in data and isinstance(data["trajectory"], list):
-        messages: list[dict] = []
-        for step in data["trajectory"]:
-            if isinstance(step, dict) and "messages" in step:
-                messages.extend(step["messages"])
-            elif isinstance(step, dict) and "role" in step:
-                messages.append(step)
-        if messages:
-            return messages
+    def looks_like_messages(value: object) -> bool:
+        return (
+            isinstance(value, list)
+            and len(value) > 0
+            and all(isinstance(item, dict) for item in value)
+            and any("role" in item for item in value)
+        )
+
+    def search(obj: object) -> list[dict] | None:
+        if isinstance(obj, dict):
+            messages = obj.get("messages")
+            if looks_like_messages(messages):
+                return messages
+
+            trajectory = obj.get("trajectory")
+            if isinstance(trajectory, list):
+                flattened: list[dict] = []
+
+                for step in trajectory:
+                    if isinstance(step, dict):
+                        step_messages = step.get("messages")
+                        if looks_like_messages(step_messages):
+                            flattened.extend(step_messages)
+                        elif "role" in step:
+                            flattened.append(step)
+
+                if flattened:
+                    return flattened
+
+            for value in obj.values():
+                found = search(value)
+                if found:
+                    return found
+
+        elif isinstance(obj, list):
+            if looks_like_messages(obj):
+                return obj
+
+            for value in obj:
+                found = search(value)
+                if found:
+                    return found
+
+        return None
+
+    found = search(data)
+
+    if found:
+        return found
 
     raise SystemExit(
-        "Error: cannot locate a 'messages' array in the trajectory JSON.\n"
-        "Expected either a top-level 'messages' key or a 'trajectory' key."
+        "Error: cannot locate a messages array in the trajectory JSON.\n"
+        "Expected a list of message objects containing role fields."
     )
 
 
