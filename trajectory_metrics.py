@@ -24,9 +24,7 @@ class MessageCounts(NamedTuple):
         return self.system + self.user + self.assistant + self.tool
 
 
-# ---------------------------------------------------------------------------
 # Core logic
-# ---------------------------------------------------------------------------
 
 KNOWN_ROLES = {"system", "user", "assistant", "tool"}
 
@@ -45,11 +43,6 @@ def load_trajectory(path: Path) -> dict:
 def extract_messages(data: dict) -> list[dict]:
     """
     Return the list of message objects from the trajectory.
-
-    Supports:
-      - { "messages": [...] }
-      - { "trajectory": [...] }
-      - nested wrapper objects, such as Docent-downloaded runs
     """
 
     def looks_like_messages(value: object) -> bool:
@@ -111,13 +104,6 @@ def extract_messages(data: dict) -> list[dict]:
 def count_messages(messages: list[dict]) -> tuple[MessageCounts, dict[str, int]]:
     """
     Count messages by role.
-
-    Returns
-    -------
-    counts : MessageCounts
-        Counts for the four canonical roles.
-    unknown : dict[str, int]
-        Counts for any unrecognised roles (for diagnostics).
     """
     counts: dict[str, int] = {role: 0 for role in KNOWN_ROLES}
     unknown: dict[str, int] = {}
@@ -142,9 +128,7 @@ def count_messages(messages: list[dict]) -> tuple[MessageCounts, dict[str, int]]
     )
 
 
-# ---------------------------------------------------------------------------
 # Formatting / output
-# ---------------------------------------------------------------------------
 
 def format_report(counts: MessageCounts, unknown: dict[str, int], label: str | None = None) -> str:
     """Render the metrics as a human-readable string."""
@@ -176,10 +160,7 @@ def format_report(counts: MessageCounts, unknown: dict[str, int], label: str | N
     return "\n".join(lines)
 
 
-# ---------------------------------------------------------------------------
 # CLI
-# ---------------------------------------------------------------------------
-
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="trajectory_metrics",
