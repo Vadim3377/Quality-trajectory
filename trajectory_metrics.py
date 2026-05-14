@@ -1,7 +1,6 @@
 """
 The trajectory JSON is expected to contain a top-level "messages" array where
-every element has at least a "role" field with one of the values:
-  system | user | assistant | tool
+every element has at least a "role" field with one of the values: system, user, assistant, tool
 
 """
 
