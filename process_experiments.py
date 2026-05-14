@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Task 2 aggregation script.
 
@@ -19,10 +18,6 @@ Expected layout:
         run1.json
       gpt-5-2-codex/
         run1.json
-
-Usage:
-
-    python process_experiments.py experiments_for_task2
 
 Outputs:
 
