@@ -1,14 +1,8 @@
-#!/usr/bin/env python3
 """
 The trajectory JSON is expected to contain a top-level "messages" array where
 every element has at least a "role" field with one of the values:
   system | user | assistant | tool
 
-Usage
------
-    python trajectory_metrics.py <path-to-trajectory.json>
-    python trajectory_metrics.py <path-to-trajectory.json> [<path2> ...]
-    python trajectory_metrics.py --help
 """
 
 import argparse
